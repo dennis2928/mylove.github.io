@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+    <title>Carta para las madres</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primario: #fff;
+            --fondo: #f20b5c;
+            --fondo-sobre: #ffe3ed;
+            --solapa-sobre: #ffccd5;
+            --cuerpo-sobre: #ffc1d1;
+            --sombra: rgba(0, 0, 0, 0.2);
+            --texto: #003049;
+            --corazon: #e009a7;
+        }
+
+        body {
+            background: var(--fondo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        h1 {
+            font-family: "Marck Script", serif;
+            text-align: center;
+            font-size: 60px;
+            margin-bottom: 50px;
+            color: #ffffff;
+        }
+
+        .contenedor {
+            width: 400px;
+        }
+
+        .envoltura-sobre {
+            position: relative;
+            background-color: var(--fondo-sobre);
+            box-shadow: 0 0 40px var(--sombra);
+            border-radius: 15px;
+        }
+
+        .sobre {
+            position: relative;
+            width: 400px;
+            height: 300px;
+        }
+
+        .sobre::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 4;
+            border-top: 180px solid var(--solapa-sobre);
+            border-right: 200px solid transparent;
+            border-left: 200px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out 0.7s;
+            border-radius: 10px;
+        }
+
+        .solapa-derecha {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+            background-color: var(--cuerpo-sobre);
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .solapa-izquierda {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(0 0, 0 100%, 100% 100%);
+            background-color: var(--cuerpo-sobre);
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .carta {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primario);
+            text-align: center;
+            box-shadow: 0 0 5px var(--sombra);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform .5s ease-in-out;
+        }
+
+        .contenido {
+            font-family: "Gill Sans", Calibri, sans-serif;
+            color: var(--texto);
+            text-align: left;
+            font-size: 12px;
+            border: 3px dotted var(--texto);
+            padding: 10px;
+            height: 100%;
+            line-height: 14px;
+            cursor: pointer;
+            overflow-Y: scroll;
+        }
+
+        .corazon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background-color: var(--corazon);
+            transform: translate(-50%, 0) rotate(45deg);
+            transition: transform 0.5s ease-in-out 1s;
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        .corazon::before,
+        .corazon::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: var(--corazon);
+            border-radius: 100%;
+
+        }
+
+        .corazon:before {
+            top: -15px;
+        }
+
+        .corazon:after {
+            right: 15px;
+        }
+
+        /*Agregar clases dinamicos*/
+        .abierto .sobre::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .abierto .corazon {
+            transform: rotate(90deg);
+            transition-delay: 0.4s;
+        }
+
+        .carta.mostrar-carta {
+            transform: translateY(-290px);
+            transition: transform .5s ease-in-out;
+        }
+
+        .carta.cerrando-carta {
+            transform: translateY(-290px);
+            transition: transform .5s ease-in-out;
+        }
+
+        .carta.abierta {
+            z-index: 10000;
+        }
+
+        .envoltura-sobre.desactivar-sobre .sobre::before {
+            pointer-events: none;
+        }
+
+        @media screen and (max-width:400px) {
+            .contenedor {
+                width: 300px;
+            }
+
+            .sobre {
+                width: 300px;
+                height: 250px;
+            }
+
+            .sobre::before {
+                border-top: 150px solid var(--solapa-sobre);
+                border-right: 150px solid transparent;
+                border-left: 150px solid transparent;
+            }
+
+        }
+
+    .imagenes-alrededor {
+      position: absolute;
+      top: -90px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .imagenes-alrededor img {
+      width: 65px;
+      height: 65px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #ff8ab8;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
+    }
+
+    .imagenes-alrededor img:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 600px) {
+      .imagenes-alrededor img {
+        width: 55px;
+        height: 55px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+    }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const envoltura = document.querySelector(".envoltura-sobre");
+            const carta = document.querySelector(".carta");
+
+            document.addEventListener("click", (e) => {
+                if (e.target.matches(".sobre") ||
+                    e.target.matches(".solapa-derecha") ||
+                    e.target.matches(".solapa-izquierda") ||
+                    e.target.matches(".corazon")) {
+                    envoltura.classList.toggle("abierto");
+
+                } else if (e.target.matches(".sobre *")) {
+                    if (!carta.classList.contains("abierta")) {
+                        carta.classList.add("mostrar-carta");
+
+                        setTimeout(() => {
+                            carta.classList.remove("mostrar-carta");
+                            carta.classList.add("abierta");
+                        }, 500);
+                        envoltura.classList.add("desactivar-sobre");
+                    } else {
+                        carta.classList.add("cerrando-carta");
+                        envoltura.classList.remove("desactivar-sobre");
+
+                        setTimeout(() => {
+                            carta.classList.remove("cerrando-carta");
+                            carta.classList.remove("abierta");
+                        }, 500);
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>¡Feliz Primer Mes Mi Amor! ❤️</h1>
+    <div class="contenedor">
+        <div class="envoltura-sobre">
+            <div class="sobre">
+                <div class="carta">
+                    <div class="contenido">
+                        
+                        <p>
+                            <span style="font-size:18px;">❤️</span>
+                            <b>Mi princesa hermosa,</b>
+                            <br><br>
+                            <b>Hoy quiero aprovechar para escribirte estas palabras con todo mi amor, celebrando este
+                            primer mes que llevamos juntos.</b> Desde el momento en que te conocí supe que eras especial,
+                            pero con el tiempo me has demostrado que eres aún más maravillosa de lo que imaginé.
+                            <span style="font-size:18px;">💖</span>
+                            <br><br>
+                            <b>Amor en serio te agradezco por todo lo que hemos pasado juntos en este mes tan maravilloso
+                            y por todo lo que hemos compartido.</b> Cada día contigo es un regalo, y quiero que sepas que
+                            eres una persona increíble, llena de luz y amor. Me haces sentir afortunado de tenerte a mi lado.
+                            <span style="font-size:18px;">💕</span>
+                            <br><br>
+                            <b>Te amo mucho, mi amor.</b> Quiero que sepas que quiero seguir luchando contigo, se que siempre te digo
+                            sobre el futuro, pero es que de verdad quiero construir un futuro contigo, lleno de
+                            momentos felices, aventuras y sueños cumplidos. <b>Eres mi persona favorita, la que me hace sentir
+                            completo y amado</b>, que en serio yo se que aunque a pesar que sera mas dificil en un futuro pienso que 
+                            si los dos nos damos esa confianza y amor que nos tenemos podremos superar cualquier obstaculo que se nos presente.
+                            <span style="font-size:18px;">❤️</span>
+                            <br><br>
+                            <b>Eres alguien difícil de encontrar en estos tiempos.</b> Me respetas, me valoras y siempre me das
+                            mi lugar. Cada día descubro algo nuevo de ti y eso me hace amarte más. Este camino estando juntos es
+                            un proceso hermoso, donde nunca dejaremos de conocernos, porque tú eres un universo lleno de
+                            sorpresas que quiero explorar siempre.
+                            <span style="font-size:18px;">💗</span>
+                            <br><br>
+                            <b>Te amo tanto, mi amor.</b> Veo en ti una mujer fuerte, única, alegre, amorosa, amable… alguien
+                            que lucha contra todo lo que la vida le lanza sin dejar de sonreír. Y eso, mi amor, lo
+                            admiro profundamente. <b>Me encanta cuando sonríes, cuando me miras a los ojos y puedo ver el
+                            amor que sientes por mí… porque mis ojos también dicen que solo te aman a ti.</b>
+                            <span style="font-size:18px;">💞</span>
+                            <br><br>
+                            <b>Siempre te elegiré, incluso en los momentos difíciles, incluso cuando no nos entendamos.</b>
+                            Porque tú eres un tesoro, uno que no todos tienen la dicha de encontrar. Me haces feliz con
+                            tus detalles, con cada mensaje, cada "te extraño", cada gesto que me demuestra lo mucho que
+                            significo para ti.
+                            <span style="font-size:18px;">💓</span>
+                            <br><br>
+                            <b>Amor, tus acciones me inspiran a mejorar cada día siempre, a ser mejor para ti.</b> Si en algún
+                            momento me equivoque o te he hecho sentir mal, te prometo que no ha sido esa mi intención
+                            siempre quiero lo mejor para nosotros mi amor y también quiero ser mejor para ti mi niña
+                            preciosa. <b>Amo tu forma intensa de amar, tu dulzura, tu manera de ser empalagosa… porque todo
+                            eso me demuestra cuánto me amas.</b>
+                            <span style="font-size:18px;">❤️</span>
+                            <br><br>
+                            <b>Amo tus besitos, tus halagos, tu forma de hacerme sentir querido y feliz.</b> Eres hermosa,
+                            preciosa, guapa, de sonrisa encantadora y ojitos que me tienen enamorado. Y aunque la vida
+                            te ponga obstáculos, quiero que sepas que estaré contigo para enfrentarlos, porque somos un
+                            equipo y siempre lo seremos.
+                            <span style="font-size:18px;">💘</span>
+                            <br><br>
+                            <b>Gracias por estar en mi vida.</b> Gracias por tus detalles, como la vez que me subiste a tus historias
+                            de Instagram, por tus mensajes llenos de amor y por cada momento que compartimos. Me haces
+                            sentir amado y valorado, y eso es algo que nunca había experimentado antes.
+                            <span style="font-size:18px;">💝</span>
+                            <br><br>
+                            <b>Sé que no siempre será fácil, que tendremos días buenos y malos.</b> Pero quiero que sepamos
+                            enfrentar todo eso juntos. Quiero luchar a tu lado por nuestras metas, y lograr todo lo que
+                            nos propongamos pero juntos mi niña preciosa. <b>Quiero todo contigo, mi amor.</b>
+                            <span style="font-size:18px;">💟</span>
+                            <br><br>
+                            <b>No importa si hay días en los que no podamos hablar mucho mi amor porque aunque sea un rato, 5 minutos pueden ser suficientes para mi.</b> A mi me encanta verte y hablar contigo
+                            mi amor porque tu me haces sentir una paz inimaginable, que en serio agradezco todo mi amor. Agradezco por todo lo que haces por mi y por todo lo que eres. <b>Eres mi
+                            persona favorita, la que me hace sentir amado y feliz.</b>
+                            <span style="font-size:18px;">💖</span>
+                            <br><br>
+                            <b>Tú eres mi ser de luz ✨, la que le da sentido y energía a mi vida.</b> Nunca lo olvides yo
+                            siempre te elegiré a ti. Porque me has demostrado que un amor bonito aún existe, uno real,
+                            como los de antes, donde se ama y se demuestra.
+                            <span style="font-size:18px;">💗</span>
+                            <br><br>
+                            <b>Doy gracias a Dios porque cruzo nuestros caminos y nos . Puede que en el pasado no lo
+                            imagináramos la verdad ni siquiera pensábamos que llegaríamos a estar juntos, pero el
+                            destino nos unió en el momento perfecto y de una manera tan bonita.</b>
+                            <span style="font-size:18px;">💞</span>
+                            <br><br>
+                            <b>Te amo 3 millones. Te amo en todos los universos. Eres mi camino, mi persona, mi amor
+                            eterno.</b> Te amo mucho en serio mi niña preciosa y espero que esta carta te guste lo hice porque quiero que te sientas muy especial mi amor.
+                            <br><br>
+                            <span style="font-size:22px;">TE AMOOOOO MI SER DE LUZ 💗💗💗💗💗✨</span>
+                            <span style="font-size:22px;">❤️</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="corazon"></div>
+            <div class="solapa-derecha"></div>
+            <div class="solapa-izquierda"></div>
+        </div>
+    </div>
+   <div class="contenedor">
+    <!-- FOTOS ALREDEDOR -->
+    <div class="imagenes-regadas">
+        <img src="images/IMG-20250611-WA0020.jpg" class="imagen-regada" style="top: 20px; left: 30px;" alt="Foto 1">
+        <img src="images/IMG-20250503-WA0005.jpg" class="imagen-regada" style="top: 80px; right: 40px;" alt="Foto 2">
+        <img src="images/IMG-20250506-WA0005.jpg" class="imagen-regada" style="top: 200px; left: 10px;" alt="Foto 3">
+        <img src="images/IMG-20250507-WA0020.jpg" class="imagen-regada" style="top: 300px; right: 20px;" alt="Foto 4">
+        <img src="images/IMG-20250511-WA0006.jpg" class="imagen-regada" style="top: 450px; left: 50px;" alt="Foto 5">
+        <img src="images/IMG-20250529-WA0001.jpg" class="imagen-regada" style="top: 100px; left: 150px;" alt="Foto 6">
+        <img src="images/IMG-20250530-WA0001.jpg" class="imagen-regada" style="top: 550px; right: 60px;" alt="Foto 7">
+        <img src="images/IMG-20250601-WA0018.jpg" class="imagen-regada" style="top: 650px; left: 20px;" alt="Foto 8">
+        <img src="images/IMG-20250605-WA0023.jpg" class="imagen-regada" style="bottom: 40px; right: 30px;" alt="Foto 9">
+        <img src="images/IMG-20250605-WA0026.jpg" class="imagen-regada" style="bottom: 120px; left: 80px;" alt="Foto 10">
+        <img src="images/IMG-20250608-WA0004.jpg" class="imagen-regada" style="bottom: 200px; right: 80px;" alt="Foto 11">
+        <img src="images/IMG-20250608-WA0007.jpg" class="imagen-regada" style="top: 200px; right: 120px;" alt="Foto 12">
+        <img src="images/IMG-20250608-WA0010.jpg" class="imagen-regada" style="top: 420px; left: 100px;" alt="Foto 13">
+        <img src="images/IMG-20250611-WA0017.jpg" class="imagen-regada" style="bottom: 90px; left: 160px;" alt="Foto 14">
+        <img src="images/IMG-20250611-WA0018.jpg" class="imagen-regada" style="top: 150px; right: 200px;" alt="Foto 15">
+        <img src="images/IMG-20250611-WA0019.jpg" class="imagen-regada" style="bottom: 200px; left: 250px;" alt="Foto 16">
+        <img src="images/IMG-20250611-WA0020.jpg" class="imagen-regada" style="top: 600px; right: 100px;" alt="Foto 17">
+        <img src="images/IMG-20250611-WA0021.jpg" class="imagen-regada" style="bottom: 50px; right: 180px;" alt="Foto 18">
+    </div>
+    <style>
+       .imagen-regada {
+      position: absolute;
+      width: 65px;
+      height: 65px;
+      object-fit:cover;
+      border-radius: 50%;
+      border: 3px solid #ff8ab8;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+      z-index: 2;
+    }
+
+    .imagen-regada:hover {
+      transform: scale(1.1);
+     margin-top: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      width: 80px;
+        height: 80px;
+    }
+    </style>
+    <footer>
+        <p style="color: #fff;">Creado por tu pollito, con todo mi cariño y amor. ❤️</p>
+    <script>
+        // Animación de las imágenes decorativas
+        const decoraciones = document.querySelectorAll('.decoracion-img');
+        decoraciones.forEach((img, index) => {
+            img.style.animation = `fadeIn 1s ease-in-out ${index * 0.5}s forwards`;
+        });
+
+        // Definición de la animación
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
